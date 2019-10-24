@@ -43,6 +43,7 @@ public class CircularTimerView extends View {
     private String text = "";
     private String suffix = "";
     private String prefix = "";
+    private Boolean isClockwise = true;
 
     int defStyleAttr;
 
@@ -72,15 +73,16 @@ public class CircularTimerView extends View {
         suffix = ta.getString(R.styleable.CircularTimerView_suffix);
         prefix = ta.getString(R.styleable.CircularTimerView_prefix);
         text = ta.getString(R.styleable.CircularTimerView_progressText);
+        isClockwise = ta.getBoolean(R.styleable.CircularTimerView_isClockwise, true);
 
         progressBarPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressBarPaint.setStyle(Paint.Style.FILL);
         progressBarPaint.setColor(progressColor);
         progressBarPaint.setStyle(Paint.Style.STROKE);
         progressBarPaint.setStrokeWidth(strokeWidthDimension * getResources().getDisplayMetrics().density);
-        if(roundedCorners){
+        if (roundedCorners) {
             progressBarPaint.setStrokeCap(Paint.Cap.ROUND);
-        }else{
+        } else {
             progressBarPaint.setStrokeCap(Paint.Cap.BUTT);
         }
         String pc = String.format("#%06X", (0xFFFFFF & progressColor));
@@ -131,14 +133,18 @@ public class CircularTimerView extends View {
         float mouthInset = mRadius / 3;
         mArcBounds.set(mouthInset, mouthInset, mRadius * 2 - mouthInset, mRadius * 2 - mouthInset);
         canvas.drawArc(mArcBounds, 0f, 360f, false, bacgroundPaint);
-        float negativeSweepAngle = (drawUpto / getMaxValue() * -360);
-        canvas.drawArc(mArcBounds, 270f, negativeSweepAngle, false, progressBarPaint);
 
-        if(TextUtils.isEmpty(suffix)){
+        if (isClockwise) {
+            canvas.drawArc(mArcBounds, 270f, (drawUpto / getMaxValue() * 360), false, progressBarPaint);
+        } else {
+            canvas.drawArc(mArcBounds, 270f, (drawUpto / getMaxValue() * -360), false, progressBarPaint);
+        }
+
+        if (TextUtils.isEmpty(suffix)) {
             suffix = "";
         }
 
-        if(TextUtils.isEmpty(prefix)){
+        if (TextUtils.isEmpty(prefix)) {
             prefix = "";
         }
 
@@ -152,98 +158,98 @@ public class CircularTimerView extends View {
     }
 
 
-    public void setProgress(float f){
+    public void setProgress(float f) {
         drawUpto = f;
         invalidate();
     }
 
-    public float getProgress(){
+    public float getProgress() {
         return drawUpto;
     }
 
-    public float getProgressPercentage(){
-        return drawUpto/getMaxValue() * 100;
+    public float getProgressPercentage() {
+        return drawUpto / getMaxValue() * 100;
     }
 
-    public void setProgressColor(int color){
+    public void setProgressColor(int color) {
         progressColor = color;
         progressBarPaint.setColor(color);
         invalidate();
     }
 
-    public void setProgressColor(String color){
+    public void setProgressColor(String color) {
         progressBarPaint.setColor(Color.parseColor(color));
         invalidate();
     }
 
-    public void setBackgroundColor(int color){
+    public void setBackgroundColor(int color) {
         backgroundColor = color;
         bacgroundPaint.setColor(color);
         invalidate();
     }
 
-    public void setBackgroundColor(String color){
+    public void setBackgroundColor(String color) {
         bacgroundPaint.setColor(Color.parseColor(color));
         invalidate();
     }
 
-    public float getMaxValue(){
+    public float getMaxValue() {
         return maxValue;
     }
 
-    public void setMaxValue(float max){
+    public void setMaxValue(float max) {
         maxValue = max;
         invalidate();
     }
 
-    public void setStrokeWidthDimension(float width){
+    public void setStrokeWidthDimension(float width) {
         strokeWidthDimension = width;
         invalidate();
     }
 
-    public float getStrokeWidthDimension(){
+    public float getStrokeWidthDimension() {
         return strokeWidthDimension;
     }
 
-    public void setBackgroundWidth(float width){
+    public void setBackgroundWidth(float width) {
         backgroundWidth = width;
         invalidate();
     }
 
-    public float getBackgroundWidth(){
+    public float getBackgroundWidth() {
         return backgroundWidth;
     }
 
-    public void setText(String progressText){
+    public void setText(String progressText) {
         text = progressText;
         invalidate();
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
 
-    public void setTextColor(int color){
+    public void setTextColor(int color) {
         progressTextColor = color;
         textPaint.setColor(color);
         invalidate();
     }
 
-    public void setTextColor(String color){
+    public void setTextColor(String color) {
         textPaint.setColor(Color.parseColor(color));
         invalidate();
     }
 
-    public int getTextColor(){
+    public int getTextColor() {
         return progressTextColor;
     }
 
-    public void setSuffix(String suffix){
+    public void setSuffix(String suffix) {
         this.suffix = suffix;
         invalidate();
     }
 
-    public String getSuffix(){
+    public String getSuffix() {
         return suffix;
     }
 
@@ -253,6 +259,15 @@ public class CircularTimerView extends View {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+        invalidate();
+    }
+
+    public Boolean getClockwise() {
+        return isClockwise;
+    }
+
+    public void setClockwise(Boolean clockwise) {
+        isClockwise = clockwise;
         invalidate();
     }
 }

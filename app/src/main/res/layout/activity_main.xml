@@ -23,6 +23,7 @@
         app:progressColor="#e76130"
         app:backgroundColor="#e7b330"
         app:backgroundWidth="8"
+        app:isClockwise="true"
         app:textSize="18sp"
         app:suffix="%"
         app:progressText="Time Remaining..."

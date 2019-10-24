@@ -12,5 +12,6 @@
         <attr name="progressText" format="string"/>
         <attr name="suffix" format="string"/>
         <attr name="prefix" format="string"/>
+        <attr name="isClockwise" fomat="boolean"/>
     </declare-styleable>
 </resources>
