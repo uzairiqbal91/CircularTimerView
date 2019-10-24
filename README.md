@@ -5,7 +5,7 @@ A simple library for creating circular progressbars for Android.
 
 ## Examples
 
-<gif src='screenshot/a.gif' height=480 width=240 />   <gif src='screenshot/b.gif' height=480 width=240 />
+<img src='screenshot/a.gif' height=480 width=240 />     <img src='screenshot/a.gif' height=480 width=240 />
 
 
 ![](https://github.com/uzairiqbal91/CircularTimerView/blob/master/screenshot/a.gif)     ![](https://github.com/uzairiqbal91/CircularTimerView/blob/master/screenshot/b.gif)
