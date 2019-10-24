@@ -393,6 +393,15 @@ public class CircularTimerView extends View {
 
     }
 
+
+    /**
+     * Use this method to initialize Timer, default interval time is 1second, you can use other method to define interval
+     *
+     * @param circularTimerListener Pass your listener to listen ticks and provide data and to listen finish call
+     * @param time                  time in long, e.g 1,2,3,4 or any long digit
+     * @param timeFormatEnum        Format to define whether the given long time number is milli, second, minute, hour or day
+     */
+
     public void setCircularTimerListener(final CircularTimerListener circularTimerListener, long time, TimeFormatEnum timeFormatEnum, long timeinterval) {
         this.circularTimerListener = circularTimerListener;
 
