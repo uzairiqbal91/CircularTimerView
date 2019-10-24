@@ -22,14 +22,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:progressColor="#e76130"
-        app:backgroundColor="#e7b330"
+        app:backgroundColor="#eee"
         app:backgroundWidth="8"
-        app:isClockwise="true"
+        app:isClockwise="false"
         app:textSize="18sp"
-        app:suffix="%"
+        app:prefix="Time Left"
+        app:suffix=" sec"
         app:progressText="Time Remaining..."
         app:maxValue="100"
-        app:startingPoint="bottom"
+        app:startingPoint="top"
         app:progressTextColor="#f9916b"/>
 
 

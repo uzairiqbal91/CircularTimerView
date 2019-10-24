@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTimerFinished() {
                 Toast.makeText(MainActivity.this, "FINISHED", Toast.LENGTH_SHORT).show();
             }
-        }, 10, TimeFormatEnum.SECONDS);
+        }, 10, TimeFormatEnum.SECONDS, 10);
 
 
         btnReset.setOnClickListener(new View.OnClickListener() {

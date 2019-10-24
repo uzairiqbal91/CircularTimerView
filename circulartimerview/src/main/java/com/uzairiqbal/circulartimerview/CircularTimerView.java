@@ -161,6 +161,17 @@ public class CircularTimerView extends View {
 
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        super.onDetachedFromWindow();
+
+
+    }
 
     public void setProgress(float f) {
         drawUpto = f;
@@ -292,11 +303,11 @@ public class CircularTimerView extends View {
 
 
     /**
-     *  Use this method to initialize Timer, default interval time is 1second, you can use other method to define interval
+     * Use this method to initialize Timer, default interval time is 1second, you can use other method to define interval
      *
      * @param circularTimerListener Pass your listener to listen ticks and provide data and to listen finish call
-     * @param time  time in long, e.g 1,2,3,4 or any long digit
-     * @param timeFormatEnum  Format to define whether the given long time number is milli, second, minute, hour or day
+     * @param time                  time in long, e.g 1,2,3,4 or any long digit
+     * @param timeFormatEnum        Format to define whether the given long time number is milli, second, minute, hour or day
      */
 
     public void setCircularTimerListener(final CircularTimerListener circularTimerListener, long time, TimeFormatEnum timeFormatEnum) {
@@ -327,15 +338,21 @@ public class CircularTimerView extends View {
             countDownTimer.cancel();
         }
 
-        countDownTimer = new CountDownTimer(timeInMillis, 1) {
+        final long maxTime = timeInMillis;
+        countDownTimer = new CountDownTimer(maxTime, intervalDuration) {
             @Override
             public void onTick(long l) {
+
+                double percentTimeCompleted = ((maxTime - l) / (double) maxTime);
+                drawUpto = (float) (maxValue * percentTimeCompleted);
                 text = circularTimerListener.updateDataOnTick(l);
                 invalidate();
             }
 
             @Override
             public void onFinish() {
+                double percentTimeCompleted = 1;
+                drawUpto = (float) (maxValue * percentTimeCompleted);
                 circularTimerListener.onTimerFinished();
                 invalidate();
             }
@@ -370,22 +387,29 @@ public class CircularTimerView extends View {
             countDownTimer.cancel();
         }
 
-        countDownTimer = new CountDownTimer(timeInMillis, timeinterval) {
+
+        final long maxTime = timeInMillis;
+
+        countDownTimer = new CountDownTimer(maxTime, timeinterval) {
             @Override
             public void onTick(long l) {
+
+                double percentTimeCompleted = ((maxTime - l) / (double) maxTime);
+                drawUpto = (float) (maxValue * percentTimeCompleted);
                 text = circularTimerListener.updateDataOnTick(l);
                 invalidate();
             }
 
             @Override
             public void onFinish() {
+                double percentTimeCompleted = 1;
+                drawUpto = (float) (maxValue * percentTimeCompleted);
                 circularTimerListener.onTimerFinished();
                 invalidate();
             }
         };
 
     }
-
 
 
     public boolean startTimer() {
@@ -396,11 +420,6 @@ public class CircularTimerView extends View {
             return true;
         }
     }
-
-
-
-
-
 
 
 }
