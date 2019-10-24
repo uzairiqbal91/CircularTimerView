@@ -32,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setCircularTimerListener(new CircularTimerListener() {
             @Override
             public String updateDataOnTick(long remainingTimeInMs) {
-                return String.valueOf((int) remainingTimeInMs / 1000);
+                return String.valueOf((int)Math.ceil((remainingTimeInMs / 1000.f)));
             }
 
             @Override
             public void onTimerFinished() {
                 Toast.makeText(MainActivity.this, "FINISHED", Toast.LENGTH_SHORT).show();
+                progressBar.setPrefix("");
+                progressBar.setSuffix("");
+                progressBar.setText("FINISHED THANKS!");
             }
         }, 10, TimeFormatEnum.SECONDS, 10);
 

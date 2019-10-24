@@ -15,7 +15,8 @@ import android.view.View;
 public class CircularTimerView extends View {
 
     private Paint progressBarPaint;
-    private Paint bacgroundPaint;
+    private Paint progressBarBackgroundPaint;
+    private Paint backgroundPaint;
     private Paint textPaint;
 
     private float mRadius;
@@ -31,6 +32,7 @@ public class CircularTimerView extends View {
     }
 
     private int progressColor;
+    private int progressBackgroundColor;
     private int backgroundColor;
     private float strokeWidthDimension;
     private float backgroundWidth;
@@ -67,6 +69,8 @@ public class CircularTimerView extends View {
 
         progressColor = ta.getColor(R.styleable.CircularTimerView_progressColor, Color.BLUE);
         backgroundColor = ta.getColor(R.styleable.CircularTimerView_backgroundColor, Color.GRAY);
+        progressBackgroundColor = ta.getColor(R.styleable.CircularTimerView_progressBackgroundColor, Color.GRAY);
+
         strokeWidthDimension = ta.getFloat(R.styleable.CircularTimerView_strokeWidthDimension, 10);
         backgroundWidth = ta.getFloat(R.styleable.CircularTimerView_backgroundWidth, 10);
         roundedCorners = ta.getBoolean(R.styleable.CircularTimerView_roundedCorners, false);
@@ -92,14 +96,22 @@ public class CircularTimerView extends View {
         String pc = String.format("#%06X", (0xFFFFFF & progressColor));
         progressBarPaint.setColor(Color.parseColor(pc));
 
-        bacgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bacgroundPaint.setStyle(Paint.Style.FILL);
-        bacgroundPaint.setColor(backgroundColor);
-        bacgroundPaint.setStyle(Paint.Style.STROKE);
-        bacgroundPaint.setStrokeWidth(backgroundWidth * getResources().getDisplayMetrics().density);
-        bacgroundPaint.setStrokeCap(Paint.Cap.SQUARE);
-        String bc = String.format("#%06X", (0xFFFFFF & backgroundColor));
-        bacgroundPaint.setColor(Color.parseColor(bc));
+        progressBarBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        progressBarBackgroundPaint.setStyle(Paint.Style.FILL);
+        progressBarBackgroundPaint.setColor(progressBackgroundColor);
+        progressBarBackgroundPaint.setStyle(Paint.Style.STROKE);
+        progressBarBackgroundPaint.setStrokeWidth(backgroundWidth * getResources().getDisplayMetrics().density);
+        progressBarBackgroundPaint.setStrokeCap(Paint.Cap.SQUARE);
+        String bc = String.format("#%06X", (0xFFFFFF & progressBackgroundColor));
+        progressBarBackgroundPaint.setColor(Color.parseColor(bc));
+
+
+
+        backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        backgroundPaint.setStyle(Paint.Style.FILL);
+        backgroundPaint.setColor(backgroundColor);
+        String bcfill = String.format("#%06X", (0xFFFFFF & backgroundColor));
+        backgroundPaint.setColor(Color.parseColor(bcfill));
 
         ta.recycle();
 
@@ -135,8 +147,10 @@ public class CircularTimerView extends View {
         super.onDraw(canvas);
 
         float mouthInset = mRadius / 3;
+        canvas.drawCircle(mRadius, mRadius, mouthInset * 2, backgroundPaint);
+
         mArcBounds.set(mouthInset, mouthInset, mRadius * 2 - mouthInset, mRadius * 2 - mouthInset);
-        canvas.drawArc(mArcBounds, 0f, 360f, false, bacgroundPaint);
+        canvas.drawArc(mArcBounds, 0f, 360f, false, progressBarBackgroundPaint);
 
         if (isClockwise) {
             canvas.drawArc(mArcBounds, startingAngle, (drawUpto / getMaxValue() * 360), false, progressBarPaint);
@@ -158,6 +172,9 @@ public class CircularTimerView extends View {
             float textHeight = textPaint.descent() + textPaint.ascent();
             canvas.drawText(drawnText, (getWidth() - textPaint.measureText(drawnText)) / 2.0f, (getWidth() - textHeight) / 2.0f, textPaint);
         }
+
+
+
 
     }
 
@@ -199,14 +216,30 @@ public class CircularTimerView extends View {
 
     public void setBackgroundColor(int color) {
         backgroundColor = color;
-        bacgroundPaint.setColor(color);
+        backgroundPaint.setColor(color);
         invalidate();
     }
 
     public void setBackgroundColor(String color) {
-        bacgroundPaint.setColor(Color.parseColor(color));
+        backgroundPaint.setColor(Color.parseColor(color));
         invalidate();
     }
+
+
+
+    public void setProgressBackgroundColor(int color) {
+        progressBackgroundColor = color;
+        progressBarBackgroundPaint.setColor(color);
+        invalidate();
+    }
+
+    public void setProgressBackgroundColor(String color) {
+        progressBarBackgroundPaint.setColor(Color.parseColor(color));
+        invalidate();
+    }
+
+
+
 
     public float getMaxValue() {
         return maxValue;
@@ -404,6 +437,7 @@ public class CircularTimerView extends View {
             public void onFinish() {
                 double percentTimeCompleted = 1;
                 drawUpto = (float) (maxValue * percentTimeCompleted);
+                text = circularTimerListener.updateDataOnTick(0);
                 circularTimerListener.onTimerFinished();
                 invalidate();
             }
