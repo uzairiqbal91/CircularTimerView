@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
-        applicationId "com.uzairiqbal.circulartimerview"
+        applicationId "com.uzairiqbal.example"
         minSdkVersion 15
         targetSdkVersion 29
         versionCode 1
@@ -26,4 +26,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    compile project(path: ':circulartimerview')
+//    implementation project(filepath: ':circulartimerview')
 }

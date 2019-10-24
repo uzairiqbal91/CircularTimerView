@@ -1,4 +1,4 @@
-package com.uzairiqbal.circulartimerview;
+package com.uzairiqbal.example;
 
 import org.junit.Test;
 
