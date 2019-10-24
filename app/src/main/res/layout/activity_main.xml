@@ -21,18 +21,18 @@
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:progressColor="#e76130"
-        app:backgroundColor="#000"
+        app:progressColor="#000"
+        app:backgroundColor="#e76130"
         app:progressBackgroundColor="#eee"
         app:backgroundWidth="8"
-        app:isClockwise="false"
+        app:isClockwise="true"
         app:textSize="18sp"
         app:prefix="Time Left "
         app:suffix=" sec"
         app:progressText="Time Remaining..."
         app:maxValue="100"
-        app:startingPoint="top"
-        app:progressTextColor="#f9916b"/>
+        app:startingPoint="bottom"
+        app:progressTextColor="#eee"/>
 
 
 
