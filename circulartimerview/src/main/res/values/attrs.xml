@@ -12,5 +12,12 @@
         <attr name="progressText" format="string"/>
         <attr name="suffix" format="string"/>
         <attr name="prefix" format="string"/>
+        <attr name="isClockwise" fomat="boolean"/>
+        <attr name="startingPoint" fomat="enum">
+            <enum name="top" value="270" />
+            <enum name="bottom" value="90" />
+            <enum name="right" value="0" />
+            <enum name="left" value="180" />
+        </attr>
     </declare-styleable>
 </resources>

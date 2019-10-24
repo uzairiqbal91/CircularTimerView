@@ -6,12 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.CountDownTimer;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-
-import com.uzairiqbal.circulartimerview.R;
 
 public class CircularTimerView extends View {
 
@@ -43,8 +42,13 @@ public class CircularTimerView extends View {
     private String text = "";
     private String suffix = "";
     private String prefix = "";
+    private Boolean isClockwise = true;
+    private int startingAngle = 270;
 
     int defStyleAttr;
+
+    private CircularTimerListener circularTimerListener;
+    private CountDownTimer countDownTimer;
 
     public CircularTimerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -72,15 +76,17 @@ public class CircularTimerView extends View {
         suffix = ta.getString(R.styleable.CircularTimerView_suffix);
         prefix = ta.getString(R.styleable.CircularTimerView_prefix);
         text = ta.getString(R.styleable.CircularTimerView_progressText);
+        isClockwise = ta.getBoolean(R.styleable.CircularTimerView_isClockwise, true);
+        startingAngle = ta.getInt(R.styleable.CircularTimerView_startingPoint, 270);
 
         progressBarPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressBarPaint.setStyle(Paint.Style.FILL);
         progressBarPaint.setColor(progressColor);
         progressBarPaint.setStyle(Paint.Style.STROKE);
         progressBarPaint.setStrokeWidth(strokeWidthDimension * getResources().getDisplayMetrics().density);
-        if(roundedCorners){
+        if (roundedCorners) {
             progressBarPaint.setStrokeCap(Paint.Cap.ROUND);
-        }else{
+        } else {
             progressBarPaint.setStrokeCap(Paint.Cap.BUTT);
         }
         String pc = String.format("#%06X", (0xFFFFFF & progressColor));
@@ -131,14 +137,18 @@ public class CircularTimerView extends View {
         float mouthInset = mRadius / 3;
         mArcBounds.set(mouthInset, mouthInset, mRadius * 2 - mouthInset, mRadius * 2 - mouthInset);
         canvas.drawArc(mArcBounds, 0f, 360f, false, bacgroundPaint);
-        float negativeSweepAngle = (drawUpto / getMaxValue() * -360);
-        canvas.drawArc(mArcBounds, 270f, negativeSweepAngle, false, progressBarPaint);
 
-        if(TextUtils.isEmpty(suffix)){
+        if (isClockwise) {
+            canvas.drawArc(mArcBounds, startingAngle, (drawUpto / getMaxValue() * 360), false, progressBarPaint);
+        } else {
+            canvas.drawArc(mArcBounds, startingAngle, (drawUpto / getMaxValue() * -360), false, progressBarPaint);
+        }
+
+        if (TextUtils.isEmpty(suffix)) {
             suffix = "";
         }
 
-        if(TextUtils.isEmpty(prefix)){
+        if (TextUtils.isEmpty(prefix)) {
             prefix = "";
         }
 
@@ -152,98 +162,98 @@ public class CircularTimerView extends View {
     }
 
 
-    public void setProgress(float f){
+    public void setProgress(float f) {
         drawUpto = f;
         invalidate();
     }
 
-    public float getProgress(){
+    public float getProgress() {
         return drawUpto;
     }
 
-    public float getProgressPercentage(){
-        return drawUpto/getMaxValue() * 100;
+    public float getProgressPercentage() {
+        return drawUpto / getMaxValue() * 100;
     }
 
-    public void setProgressColor(int color){
+    public void setProgressColor(int color) {
         progressColor = color;
         progressBarPaint.setColor(color);
         invalidate();
     }
 
-    public void setProgressColor(String color){
+    public void setProgressColor(String color) {
         progressBarPaint.setColor(Color.parseColor(color));
         invalidate();
     }
 
-    public void setBackgroundColor(int color){
+    public void setBackgroundColor(int color) {
         backgroundColor = color;
         bacgroundPaint.setColor(color);
         invalidate();
     }
 
-    public void setBackgroundColor(String color){
+    public void setBackgroundColor(String color) {
         bacgroundPaint.setColor(Color.parseColor(color));
         invalidate();
     }
 
-    public float getMaxValue(){
+    public float getMaxValue() {
         return maxValue;
     }
 
-    public void setMaxValue(float max){
+    public void setMaxValue(float max) {
         maxValue = max;
         invalidate();
     }
 
-    public void setStrokeWidthDimension(float width){
+    public void setStrokeWidthDimension(float width) {
         strokeWidthDimension = width;
         invalidate();
     }
 
-    public float getStrokeWidthDimension(){
+    public float getStrokeWidthDimension() {
         return strokeWidthDimension;
     }
 
-    public void setBackgroundWidth(float width){
+    public void setBackgroundWidth(float width) {
         backgroundWidth = width;
         invalidate();
     }
 
-    public float getBackgroundWidth(){
+    public float getBackgroundWidth() {
         return backgroundWidth;
     }
 
-    public void setText(String progressText){
+    public void setText(String progressText) {
         text = progressText;
         invalidate();
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
 
-    public void setTextColor(int color){
+    public void setTextColor(int color) {
         progressTextColor = color;
         textPaint.setColor(color);
         invalidate();
     }
 
-    public void setTextColor(String color){
+    public void setTextColor(String color) {
         textPaint.setColor(Color.parseColor(color));
         invalidate();
     }
 
-    public int getTextColor(){
+    public int getTextColor() {
         return progressTextColor;
     }
 
-    public void setSuffix(String suffix){
+    public void setSuffix(String suffix) {
         this.suffix = suffix;
         invalidate();
     }
 
-    public String getSuffix(){
+    public String getSuffix() {
         return suffix;
     }
 
@@ -255,5 +265,143 @@ public class CircularTimerView extends View {
         this.prefix = prefix;
         invalidate();
     }
+
+    public Boolean getClockwise() {
+        return isClockwise;
+    }
+
+    public void setClockwise(Boolean clockwise) {
+        isClockwise = clockwise;
+        invalidate();
+    }
+
+    public int getStartingAngle() {
+        return startingAngle;
+    }
+
+    /**
+     * @param startingAngle 270 for Top
+     *                      0 for Right
+     *                      90 for Bottom
+     *                      180 for Left
+     */
+    public void setStartingAngle(int startingAngle) {
+        this.startingAngle = startingAngle;
+        invalidate();
+    }
+
+
+    /**
+     *  Use this method to initialize Timer, default interval time is 1second, you can use other method to define interval
+     *
+     * @param circularTimerListener Pass your listener to listen ticks and provide data and to listen finish call
+     * @param time  time in long, e.g 1,2,3,4 or any long digit
+     * @param timeFormatEnum  Format to define whether the given long time number is milli, second, minute, hour or day
+     */
+
+    public void setCircularTimerListener(final CircularTimerListener circularTimerListener, long time, TimeFormatEnum timeFormatEnum) {
+        this.circularTimerListener = circularTimerListener;
+
+        long timeInMillis = 0;
+        long intervalDuration = 1000;
+
+        switch (timeFormatEnum) {
+            case MILLIS:
+                timeInMillis = time;
+                break;
+            case SECONDS:
+                timeInMillis = time * 1000;
+                break;
+            case MINUTES:
+                timeInMillis = time * 1000 * 60;
+                break;
+            case HOUR:
+                timeInMillis = time * 1000 * 60 * 60;
+                break;
+            case DAY:
+                timeInMillis = time * 1000 * 60 * 60 * 24;
+                break;
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer = new CountDownTimer(timeInMillis, 1) {
+            @Override
+            public void onTick(long l) {
+                text = circularTimerListener.updateDataOnTick(l);
+                invalidate();
+            }
+
+            @Override
+            public void onFinish() {
+                circularTimerListener.onTimerFinished();
+                invalidate();
+            }
+        };
+
+    }
+
+    public void setCircularTimerListener(final CircularTimerListener circularTimerListener, long time, TimeFormatEnum timeFormatEnum, long timeinterval) {
+        this.circularTimerListener = circularTimerListener;
+
+        long timeInMillis = 0;
+
+        switch (timeFormatEnum) {
+            case MILLIS:
+                timeInMillis = time;
+                break;
+            case SECONDS:
+                timeInMillis = time * 1000;
+                break;
+            case MINUTES:
+                timeInMillis = time * 1000 * 60;
+                break;
+            case HOUR:
+                timeInMillis = time * 1000 * 60 * 60;
+                break;
+            case DAY:
+                timeInMillis = time * 1000 * 60 * 60 * 24;
+                break;
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer = new CountDownTimer(timeInMillis, timeinterval) {
+            @Override
+            public void onTick(long l) {
+                text = circularTimerListener.updateDataOnTick(l);
+                invalidate();
+            }
+
+            @Override
+            public void onFinish() {
+                circularTimerListener.onTimerFinished();
+                invalidate();
+            }
+        };
+
+    }
+
+
+
+    public boolean startTimer() {
+        if (countDownTimer == null) {
+            return false;
+        } else {
+            countDownTimer.start();
+            return true;
+        }
+    }
+
+
+
+
+
+
+
 }
 

@@ -8,10 +8,11 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/btnRestart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Reset" />
 
 
 
@@ -23,10 +24,16 @@
         app:progressColor="#e76130"
         app:backgroundColor="#e7b330"
         app:backgroundWidth="8"
+        app:isClockwise="true"
         app:textSize="18sp"
         app:suffix="%"
         app:progressText="Time Remaining..."
         app:maxValue="100"
+        app:startingPoint="bottom"
         app:progressTextColor="#f9916b"/>
+
+
+
+
 
 </LinearLayout>
