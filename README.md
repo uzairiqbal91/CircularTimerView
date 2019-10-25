@@ -84,6 +84,11 @@ You can modify it programmatically if you want
 	progressBar.setTextColor("#FF6FD99D"); 		// set text color
 	progressBar.setSuffix("%"); 			// set suffix
 	progressBar.setPrefix(""); 			// set prefix
+	progress.setClockwise(true);        // clocksie if false than anticlockwise timer rotation
+	progress.setStartingAngle(top);     // top means start timer from top 
+	
+	 
+
 ```
 
 <b>Getters</b>
@@ -100,6 +105,10 @@ You can modify it programmatically if you want
 	progressBar.getTextColor();			// get text color
 	progressBar.getSuffix();			// get suffix
 	progressBar.getPrefix();			// get prefix
+	progressBar.getClockwise();         // getclocksise boolean
+	progressBar.getStartingAngle();     // get startangle
+	
+	
 ```
 
 ## LICENSE
