@@ -13,8 +13,8 @@
         <attr name="progressText" format="string"/>
         <attr name="suffix" format="string"/>
         <attr name="prefix" format="string"/>
-        <attr name="isClockwise" fomat="boolean"/>
-        <attr name="startingPoint" fomat="enum">
+        <attr name="isClockwise" format="boolean"/>
+        <attr name="startingPoint" format="enum">
             <enum name="top" value="270" />
             <enum name="bottom" value="90" />
             <enum name="right" value="0" />
